@@ -1,0 +1,102 @@
+
+<div class="page-header">    
+  <h1> User Registration </h1>
+</div>
+
+<form name="regForm" ng-submit="register.regUser(regData);">
+      <label>Name:</label>
+      <input class="form-control" type="text" name="name" 
+             placeholder="Please enter name" 
+             ng-model="register.regData.name">
+      <br>
+      <div ng-class="{'has-success':!(register.useremailInvalid), 
+                     'has-error':(register.useremailInvalid)
+                     }">
+      <label>Email:</label>
+      <input class="form-control" type="text" name="email" 
+             placeholder="Please enter email" 
+             ng-model="register.regData.email"
+             ng-blur="register.checkUserEmail(regData)"
+             required>
+      <span class="glyphicon glyphicon-repeat"ng-show="register.checkingUserEmail"></span>
+
+      <p class="help-block" ng-show="(!regForm.email.$pristine && regForm.email.$error.required) ||
+                                     (regForm.$submitted && regForm.email.$error.required)">
+              This field is required</p>
+      <p class="help-block" 
+        ng-show="register.useremailMsg && !regForm.email.$error.required">
+        {{register.useremailMsg}}
+      </p>        
+      </div>
+      <br>
+      
+      <div ng-class="{'has-success':!(register.usernameInvalid), 
+                     'has-error':(register.usernameInvalid)
+                     }">
+      <label>Username:</label>
+      <input class="form-control" type="text" name="username" 
+             placeholder="Please enter username" 
+             ng-model="register.regData.username"
+             ng-blur="register.checkUserName(regData)"
+             required>
+      <span class="glyphicon glyphicon-repeat"ng-show="register.checkingUserName"></span>
+      <p class="help-block" ng-show="(!regForm.username.$pristine && regForm.username.$error.required) ||
+                                     (regForm.$submitted && regForm.username.$error.required)">
+              This field is required</p>
+
+      <p class="help-block" 
+         ng-show="register.usernameMsg && !regForm.username.$error.required">
+        {{register.usernameMsg}}
+      </p>
+      </div>
+      <br>
+      <div ng-class="{'has-success':(regForm.password.$valid), 
+                     'has-error':(!regForm.password.$valid && regForm.$submited)
+                     }">
+
+      <label>Password:</label>
+      <input class="form-control" type="text" name="password" 
+             placeholder="Please enter password" 
+             ng-model="register.regData.password"
+             required>
+      <p class="help-block" ng-show="(!regForm.password.$pristine && regForm.password.$error.required) ||
+                                      (regForm.$submitted && regForm.password.$error.required)">
+            This Field is required</p>       
+
+      </div>
+      <br>
+      <div ng-class="{'has-success':(confirmed && !regForm.confirmPassword.$error.required), 
+                     'has-error':(!confirmed && !regForm.confirmPassword.$error.required)||
+                                (regForm.confirmPassword.$error.required && !regForm.confirmPassword.$pristine)
+                     }">
+
+      <label>Confirm Password:</label>
+      <input class="form-control" type="text" name="confirmPassword" 
+             placeholder="Please confirm password"
+             ng-model="confirm" 
+             match="{{[register.regData.password]}}"
+             ng-change="register.regData.password"
+             required/>
+      <p class="help-block" ng-show="(!regForm.confirmPassword.$pristine && regForm.confirmPassword.$error.required) ||
+                                      (regForm.$submitted && regForm.confirmPassword.$error.required)">
+              This Field is required</p>       
+      <p class="help-block" ng-show="(!confirmed && !regForm.confirmPassword.$pristine)">
+        Passwords do not match</p>
+      </div>
+      <br/>
+      <button class="btn btn-primary" type="submit">Register</button>
+</form>
+
+<br>
+<div class="jumbotron text-center" ng-show="register.loading">
+    <span class="glyphicon glyphicon-repeat spinner"></span>
+    <p>Loading...</p>
+</div>
+<div class="row show-hide-message" ng-show="register.successMsg">
+     <div class="alert alert-success">{{register.successMsg}}</div>
+</div>
+
+<div class="row show-hide-message" ng-show="register.errorMsg">
+     <div class="alert alert-danger">{{register.errorMsg}}</div>
+</div>
+
